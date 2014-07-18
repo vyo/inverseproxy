@@ -1123,7 +1123,7 @@ public class ClientToProxyConnection extends ProxyConnection<HttpRequest> {
     private String identifyHostAndPort(HttpRequest httpRequest) {
 		String port = System.getenv("REVERSE_PORT");
 		if (port == null) {
-			String hostAndPort = "localhost:" + port;// ProxyUtils.parseHostAndPort(httpRequest);
+			String hostAndPort = ProxyUtils.parseHostAndPort(httpRequest);
 			if (StringUtils.isBlank(hostAndPort)) {
 				List<String> hosts = httpRequest.headers().getAll(
 						HttpHeaders.Names.HOST);
