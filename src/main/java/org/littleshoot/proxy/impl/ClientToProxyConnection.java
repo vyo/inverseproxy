@@ -1121,17 +1121,22 @@ public class ClientToProxyConnection extends ProxyConnection<HttpRequest> {
      * @return
      */
     private String identifyHostAndPort(HttpRequest httpRequest) {
-        String hostAndPort = ProxyUtils.parseHostAndPort(httpRequest);
-        if (StringUtils.isBlank(hostAndPort)) {
-            List<String> hosts = httpRequest.headers().getAll(
-                    HttpHeaders.Names.HOST);
-            if (hosts != null && !hosts.isEmpty()) {
-                hostAndPort = hosts.get(0);
-            }
-        }
+		String port = System.getenv("REVERSE_PORT");
+		if (port == null) {
+			String hostAndPort = "localhost:" + port;// ProxyUtils.parseHostAndPort(httpRequest);
+			if (StringUtils.isBlank(hostAndPort)) {
+				List<String> hosts = httpRequest.headers().getAll(
+						HttpHeaders.Names.HOST);
+				if (hosts != null && !hosts.isEmpty()) {
+					hostAndPort = hosts.get(0);
+				}
+			}
 
-        return hostAndPort;
-    }
+			return hostAndPort;
+		} else {
+			return "localhost:" + port;
+		}
+	}
 
     /**
      * Write an empty buffer at the end of a chunked transfer. We need to do
